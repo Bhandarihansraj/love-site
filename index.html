@@ -26,12 +26,37 @@ object-fit:cover;
 z-index:-2;
 }
 
-/* DARK CINEMATIC OVERLAY */
+/* CINEMATIC OVERLAY */
 .overlay{
 position:fixed;
 inset:0;
-background:linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.75));
+background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.75));
 z-index:-1;
+}
+
+/* TAP TO START */
+#tapToStart{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+color:white;
+text-align:center;
+font-size:1.2rem;
+}
+#tapToStart div{
+background:rgba(255,255,255,.15);
+padding:30px 40px;
+border-radius:25px;
+backdrop-filter:blur(15px);
+}
+#tapToStart span{
+font-size:2.2rem;
+display:block;
+margin-bottom:10px;
 }
 
 /* GLASS CARD */
@@ -74,7 +99,7 @@ line-height:1.7;
 margin-top:12px;
 }
 
-/* IMAGE */
+/* IMAGES */
 img{
 width:180px;
 border-radius:20px;
@@ -111,6 +136,7 @@ justify-content:center;
 font-size:1.3rem;
 cursor:pointer;
 color:#fff;
+z-index:10;
 }
 
 /* HEARTS */
@@ -131,11 +157,19 @@ pointer-events:none;
 <div class="overlay"></div>
 
 <!-- 🎵 MUSIC -->
-<audio id="song" loop>
-  <source src="music/sundari.mp3" type="audio/mpeg">
+<audio id="song" loop preload="auto">
+  <source src="music/sundari.mp4" type="audio/mpeg">
 </audio>
 
-<div class="music" onclick="toggleMusic()">🎶</div>
+<!-- TAP TO START -->
+<div id="tapToStart">
+  <div>
+    <span>🎶</span>
+    Tap anywhere to begin
+  </div>
+</div>
+
+<div class="music" onclick="toggleMusic()">🎵</div>
 <div class="hearts" id="hearts"></div>
 
 <div class="card">
@@ -145,9 +179,9 @@ pointer-events:none;
 <img src="photos/p1.jpg">
 <h1>Hey Sundri ✨</h1>
 <p>
-I won’t call this a confession…<br>
-Just a quiet moment,<br>
-where I let my heart speak 🤍
+This isn’t dramatic.<br>
+It’s just me,<br>
+being honest for a moment 🤍
 </p>
 <button class="btn" onclick="next()">Continue</button>
 </div>
@@ -155,11 +189,11 @@ where I let my heart speak 🤍
 <!-- PAGE 2 -->
 <div class="page">
 <img src="photos/p2.jpg">
-<h1>You Have This Glow</h1>
+<h1>You Feel Different</h1>
 <p>
-Not the loud kind.<br>
-The calm one…<br>
-that stays with people 🌸
+Calm.<br>
+Warm.<br>
+The kind of presence that stays 🌸
 </p>
 <button class="btn" onclick="next()">Next</button>
 </div>
@@ -171,7 +205,7 @@ that stays with people 🌸
 <p>
 Talking to you feels easy.<br>
 Laughing with you feels real.<br>
-And that matters 💫
+That matters ✨
 </p>
 <button class="btn" onclick="next()">More</button>
 </div>
@@ -190,35 +224,51 @@ not who you try to be ❤️
 </div>
 
 <script>
-let index=0;
-const pages=document.querySelectorAll('.page');
+/* MUSIC AUTOSTART ON FIRST TAP */
+const audio = document.getElementById("song");
+const overlayTap = document.getElementById("tapToStart");
+let started = false;
+
+function startExperience(){
+  if(!started){
+    audio.play().catch(()=>{});
+    audio.loop = true;
+    started = true;
+    overlayTap.style.display = "none";
+  }
+}
+
+overlayTap.addEventListener("click", startExperience);
+
+/* PAGE FLOW */
+let index = 0;
+const pages = document.querySelectorAll(".page");
+
 function next(){
-pages[index].classList.remove('active');
-index++;
-pages[index].classList.add('active');
+  pages[index].classList.remove("active");
+  index++;
+  pages[index].classList.add("active");
+  startExperience();
 }
 
-/* MUSIC */
-const audio=document.getElementById('song');
-let play=false;
+/* MUSIC TOGGLE */
 function toggleMusic(){
-play?audio.pause():audio.play();
-play=!play;
+  audio.paused ? audio.play() : audio.pause();
 }
 
-/* HEARTS */
+/* FLOATING HEARTS */
 setInterval(()=>{
-let h=document.createElement('div');
-h.innerText='💖';
-h.style.position='fixed';
-h.style.left=Math.random()*100+'vw';
-h.style.top='-20px';
-h.style.fontSize=Math.random()*22+14+'px';
-h.style.opacity=Math.random();
-h.style.transition='transform 5s linear';
-document.getElementById('hearts').appendChild(h);
-setTimeout(()=>h.style.transform=`translateY(${innerHeight+40}px)`,50);
-setTimeout(()=>h.remove(),5000);
+  let h=document.createElement('div');
+  h.innerText='💖';
+  h.style.position='fixed';
+  h.style.left=Math.random()*100+'vw';
+  h.style.top='-20px';
+  h.style.fontSize=Math.random()*22+14+'px';
+  h.style.opacity=Math.random();
+  h.style.transition='transform 5s linear';
+  document.body.appendChild(h);
+  setTimeout(()=>h.style.transform=`translateY(${innerHeight+40}px)`,50);
+  setTimeout(()=>h.remove(),5000);
 },260);
 </script>
 
