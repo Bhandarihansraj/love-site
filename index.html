@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Sundri ✨</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+height:100vh;
+font-family:'Quicksand',sans-serif;
+overflow:hidden;
+}
+
+/* VIDEO BACKGROUND */
+video{
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+}
+
+/* DARK CINEMATIC OVERLAY */
+.overlay{
+position:fixed;
+inset:0;
+background:linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.75));
+z-index:-1;
+}
+
+/* GLASS CARD */
+.card{
+width:92%;
+max-width:420px;
+margin:auto;
+margin-top:8vh;
+padding:2rem;
+border-radius:28px;
+background:rgba(255,255,255,.22);
+backdrop-filter:blur(22px);
+-webkit-backdrop-filter:blur(22px);
+border:1px solid rgba(255,255,255,.25);
+box-shadow:0 30px 80px rgba(0,0,0,.6);
+text-align:center;
+animation:fadeUp 1.2s ease;
+}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(40px)}
+to{opacity:1}
+}
+
+h1{
+font-family:'Dancing Script',cursive;
+font-size:2.6rem;
+color:#fff;
+text-shadow:0 4px 20px rgba(0,0,0,.6);
+}
+
+p{
+color:#f1f1f1;
+font-size:1.05rem;
+line-height:1.7;
+margin-top:12px;
+}
+
+/* IMAGE */
+img{
+width:180px;
+border-radius:20px;
+margin:14px 0;
+box-shadow:0 18px 40px rgba(0,0,0,.6);
+transition:.4s;
+}
+img:hover{transform:scale(1.06)}
+
+/* BUTTON */
+.btn{
+margin-top:18px;
+padding:12px 30px;
+border:none;
+border-radius:30px;
+font-size:1rem;
+cursor:pointer;
+background:linear-gradient(135deg,#ff4d8d,#ff7fb0);
+color:#fff;
+box-shadow:0 10px 25px rgba(255,77,141,.5);
+}
+
+/* MUSIC BUTTON */
+.music{
+position:fixed;
+bottom:16px;right:16px;
+width:54px;height:54px;
+border-radius:50%;
+background:rgba(255,255,255,.25);
+backdrop-filter:blur(15px);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:1.3rem;
+cursor:pointer;
+color:#fff;
+}
+
+/* HEARTS */
+.hearts{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎬 VIDEO BACKGROUND -->
+<video autoplay muted loop playsinline>
+  <source src="bg.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- 🎵 MUSIC -->
+<audio id="song" loop>
+  <source src="music/sundari.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music" onclick="toggleMusic()">🎶</div>
+<div class="hearts" id="hearts"></div>
+
+<div class="card">
+
+<!-- PAGE 1 -->
+<div class="page active">
+<img src="photos/p1.jpg">
+<h1>Hey Sundri ✨</h1>
+<p>
+I won’t call this a confession…<br>
+Just a quiet moment,<br>
+where I let my heart speak 🤍
+</p>
+<button class="btn" onclick="next()">Continue</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+<img src="photos/p2.jpg">
+<h1>You Have This Glow</h1>
+<p>
+Not the loud kind.<br>
+The calm one…<br>
+that stays with people 🌸
+</p>
+<button class="btn" onclick="next()">Next</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+<img src="photos/p3.jpg">
+<h1>Honestly</h1>
+<p>
+Talking to you feels easy.<br>
+Laughing with you feels real.<br>
+And that matters 💫
+</p>
+<button class="btn" onclick="next()">More</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page">
+<img src="photos/p4.jpg">
+<h1>Just This</h1>
+<p>
+I admire you.<br>
+For who you are,<br>
+not who you try to be ❤️
+</p>
+</div>
+
+</div>
+
+<script>
+let index=0;
+const pages=document.querySelectorAll('.page');
+function next(){
+pages[index].classList.remove('active');
+index++;
+pages[index].classList.add('active');
+}
+
+/* MUSIC */
+const audio=document.getElementById('song');
+let play=false;
+function toggleMusic(){
+play?audio.pause():audio.play();
+play=!play;
+}
+
+/* HEARTS */
+setInterval(()=>{
+let h=document.createElement('div');
+h.innerText='💖';
+h.style.position='fixed';
+h.style.left=Math.random()*100+'vw';
+h.style.top='-20px';
+h.style.fontSize=Math.random()*22+14+'px';
+h.style.opacity=Math.random();
+h.style.transition='transform 5s linear';
+document.getElementById('hearts').appendChild(h);
+setTimeout(()=>h.style.transform=`translateY(${innerHeight+40}px)`,50);
+setTimeout(()=>h.remove(),5000);
+},260);
+</script>
+
+</body>
+</html>
